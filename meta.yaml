@@ -1,0 +1,63 @@
+{% set name = "ebg" %}
+{% set version = "0.1" %}
+
+package:
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
+
+source:
+  url: "https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz"
+  sha256: 973196dd58d3b388ce22a2d5c922af50c1d66519a99dcbebf3b62d99701fc1f1
+
+build:
+  number: 0
+  noarch: python
+  entry_points:
+    - ebg = EBG.__main__:main
+  script: "{{ PYTHON }} -m pip install . -vv"
+
+run:
+  channels:
+    - conda-forge
+
+requirements:
+  host:
+    - biopython
+    - ete3
+    - lightgbm
+    - networkx
+    - numpy
+    - pandas
+    - pip
+    - python
+    - scipy
+  run:
+    - biopython
+    - ete3
+    - lightgbm
+    - networkx
+    - numpy
+    - pandas
+    - python
+    - scipy
+
+test:
+  imports:
+    - EBG
+    - EBG.Features
+    - EBG.Models
+    - EBG.Prediction
+    - EBG.utils
+  commands:
+    - ebg --help
+
+about:
+  home: https://github.com/wiegertj/EBG
+  summary: 'Simple, fast, extensible JSON encoder/decoder for Python'
+  description: 'EBG is a fast predictor for the standard non-parametric Felsenstein Bootstrap support (SBS) of phylogenetic trees in python.
+    It uses RAxML-NG phylogenies as input and predicts the SBS values of all non-trivial branches.'
+  license: GPL-3.0-only
+  license_family: GPL
+  license_file: LICENSE
+  doc_url: https://github.com/wiegertj/EBG/wiki
+  dev_url: https://github.com/wiegertj/EBG
