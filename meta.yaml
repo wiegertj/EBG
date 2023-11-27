@@ -7,7 +7,7 @@ package:
 
 source:
   url: "https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz"
-  sha256: 973196dd58d3b388ce22a2d5c922af50c1d66519a99dcbebf3b62d99701fc1f1
+  sha256: 7b791a7801599dc748d4ca9882157f28da34d1e5fc8873c2b6d7e4d5d19d93e4
 
 build:
   number: 0
@@ -54,3 +54,7 @@ about:
   license_file: LICENSE
   doc_url: https://github.com/wiegertj/EBG/wiki
   dev_url: https://github.com/wiegertj/EBG
+
+extra:
+  recipe-maintainers:
+    - wiegertj
