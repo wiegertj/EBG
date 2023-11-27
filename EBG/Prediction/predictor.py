@@ -131,7 +131,6 @@ class Predictor:
 
         features["dataset"] = self.output_prefix
         features.to_csv(os.path.abspath(os.path.join("..", self.output_prefix + "_features.csv")))
-        self.logger.info("Stored features and prediction at: " + self.output_prefix)
 
         self.prediction = features
 
@@ -165,23 +164,16 @@ class Predictor:
                                                         self.output_prefix + "_" + value + "_support_prediction.newick"),
                                    format=0)
             else:
-                if "uncertainty" in value:
-                    uncertainty = True
-                else:
-                    uncertainty = False
                 for node in current_tree.traverse():
                     if not node.is_leaf():
                         matching_row = self.prediction[self.prediction['branchId'] == node.name]
                         if not matching_row.empty:
-                            if uncertainty:
-                                target = matching_row.iloc[0]['prediction_' + value]
-                            else:
-                                target = matching_row.iloc[0]['prediction_' + value]
+                            target = matching_row.iloc[0]['prediction_' + value]
                             node.__setattr__("support", target)
                 current_tree.write(outfile=os.path.join(self.current_directory, self.output_prefix,
                                                         self.output_prefix + "_" + value + "_support_prediction.newick"),
                                    format=0)
 
-            self.logger.info(f"Stored trees with prediction result at: " + os.path.abspath(os.path.join(self.current_directory, self.output_prefix)))
+        self.logger.info(f"Stored trees with prediction result at: " + os.path.abspath(os.path.join(self.current_directory, self.output_prefix)))
 
 
