@@ -22,15 +22,8 @@ run:
 
 requirements:
   host:
-    - biopython
-    - ete3
-    - lightgbm
-    - networkx
-    - numpy
-    - pandas
     - pip
-    - python
-    - scipy
+    - python>=3.6
   run:
     - biopython
     - ete3
@@ -38,7 +31,7 @@ requirements:
     - networkx
     - numpy
     - pandas
-    - python
+    - python>=3.6
     - scipy
 
 test:
@@ -53,7 +46,7 @@ test:
 
 about:
   home: https://github.com/wiegertj/EBG
-  summary: 'Simple, fast, extensible JSON encoder/decoder for Python'
+  summary: 'EBG is a fast predictor for the standard non-parametric Felsenstein Bootstrap support (SBS)'
   description: 'EBG is a fast predictor for the standard non-parametric Felsenstein Bootstrap support (SBS) of phylogenetic trees in python.
     It uses RAxML-NG phylogenies as input and predicts the SBS values of all non-trivial branches.'
   license: GPL-3.0-only

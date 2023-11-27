@@ -180,9 +180,8 @@ class Predictor:
                             node.__setattr__("support", target)
                 current_tree.write(outfile=os.path.join(self.current_directory, self.output_prefix,
                                                         self.output_prefix + "_" + value + "_support_prediction.newick"),
-                                   format=0, features=["uncertainty"])
+                                   format=0)
 
-            logging.info(f"Stored tree with prediction result at: " + os.path.abspath(os.path.join(self.current_directory, self.output_prefix,
-                                                    self.output_prefix + "_" + value + "_support_prediction.newick")))
+            self.logger.info(f"Stored trees with prediction result at: " + os.path.abspath(os.path.join(self.current_directory, self.output_prefix)))
 
 
