@@ -6,7 +6,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="ebg",
-    version="0.0.1",
+    version="0.0.2",
     packages=find_packages(),
     entry_points={
         'console_scripts': ['ebg = EBG.__main__:main']
