@@ -1,4 +1,8 @@
 from setuptools import setup, find_packages
+from pathlib import Path
+
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="ebg",
@@ -10,7 +14,8 @@ setup(
     author='Julius Wiegert',
     author_email='julius-wiegert@web.de',
     description='Tool for estimating the Felsenstein Bootstrap support of phylogenetic trees',
-    long_description='EBG is a fast predictor for the standard non-parametric Felsenstein Bootstrap support (SBS) of phylogenetic trees in python. It uses RAxML-NG phylogenies as input and predicts the SBS values of all non-trivial branches',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     include_package_data=True,
     install_requires=[
         "pandas",
