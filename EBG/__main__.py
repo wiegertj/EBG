@@ -17,7 +17,8 @@ def main():
     parser.add_argument("-msa", required=True, type=str, help="PATH\t\tabsolute path to the MSA file in .fasta format ")
     parser.add_argument("-tree", required=True, type=str, help="PATH\t\tabsolute path to the tree file in newick format (.bestTree)")
     parser.add_argument("-model", required=True, type=str, help="PATH\t\tabsolute path to the raxml-ng model file (.bestModel)")
-    parser.add_argument("-o", required=False, type=str, help="VALUE\t\toutput folder name, overwrites all files if already existing\tdefault: EBG_output")
+    parser.add_argument("-o", required=False, type=str, default="EBG_output",
+                        help="VALUE\t\toutput folder name, overwrites all files if already existing\tdefault: EBG_output")
     parser.add_argument("-t", required=False, type=str, default="b",
                         help="c | r | b\t\ttype of prediction: (c)lassification, (r)egression, (b)oth\tdefault: b")
     parser.add_argument("-raxmlng", required=False, type=str, default="raxml-ng",

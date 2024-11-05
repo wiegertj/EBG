@@ -1,6 +1,6 @@
 # EBG: Educated Bootstrap Guesser
-[![image](https://img.shields.io/pypi/v/ebg.svg)](https://pypi.python.org/pypi/bad-phylo)
-[![image](https://img.shields.io/conda/vn/conda-forge/ebg.svg)](https://anaconda.org/conda-forge/bad-phylo)
+[![image](https://img.shields.io/pypi/v/ebg.svg)](https://pypi.python.org/pypi/ebg)
+[![image](https://img.shields.io/conda/vn/conda-forge/ebg.svg)](https://anaconda.org/conda-forge/ebg)
 [![image](https://img.shields.io/badge/License-GPL3-yellow.svg)](https://opensource.org/licenses/GPL-3-0)
 
 Documentation: https://github.com/wiegertj/EBG/wiki
