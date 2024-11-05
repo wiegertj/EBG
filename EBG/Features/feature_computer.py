@@ -568,8 +568,8 @@ class FeatureComputer:
             ]
             try:
                 subprocess.run(raxml_command, shell=False)
-            except:
-                self.logger.error()
+            except Exception as e:
+                self.logger.error(f"An error occurred during executing RAxML-NG: {e}. Please refer to the RAxML-NG log-file for further details.")
 
             result_tree_path = os.path.join(os.curdir, output_prefix + ".raxml.startTree")
 
