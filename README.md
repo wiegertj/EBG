@@ -31,6 +31,9 @@ The results will be stored in a folder called test.
 
 Please keep in mind that EBG requires an installation of RAxML-NG. By default, it uses the command ```raxml-ng```. 
 If your RAxML-NG installation is not part of the PATH variable, you can specify the path to the RAxML-NG binary file with the parameter ```-raxmlng PATH_TO_RAXMLNG```.
+### Citation
+If you are using EBG for your publication, please cite our published paper in Molecular Biology and Evolution: 
+[EBG Paper](https://academic.oup.com/mbe/article/41/10/msae215/7825466)
 ### References
 * A. M. Kozlov, D. Darriba, T. Flouri, B. Morel, and A. Stamatakis (2019) 
 **RAxML-NG: a fast, scalable and user-friendly tool for maximum likelihood phylogenetic inference** 
