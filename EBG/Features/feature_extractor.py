@@ -29,16 +29,19 @@ class FeatureExtractor:
            extract_features(self):
                triggers feature computation in the right order, merges result and tracks execution time
            """
-    def __init__(self, msa_file_path, tree_file_path, model_file_path, output_prefix, raxml_ng_path, redo):
+
+    def __init__(self, msa_file_path, tree_file_path, model_file_path, output_prefix, raxml_ng_path, redo, light):
         self.msa_file_path = msa_file_path
         self.tree_file_path = tree_file_path
         self.model_file_path = model_file_path
-        self.feature_computer = FeatureComputer(msa_file_path, tree_file_path, model_file_path, output_prefix, raxml_ng_path, redo)
+        self.feature_computer = FeatureComputer(msa_file_path, tree_file_path, model_file_path, output_prefix,
+                                                raxml_ng_path, redo)
         self.logger = setup_logger("FeatureExtractor")
         check_file_exists(msa_file_path, "Fasta MSA file", self.logger)
         check_file_exists(tree_file_path, "Newick tree file", self.logger)
         check_file_exists(model_file_path, "RAxML-NG model file", self.logger)
         self.current_directory = os.path.abspath(os.curdir)
+        self.light = light
 
     def extract_features(self):
         """
@@ -50,28 +53,41 @@ class FeatureExtractor:
                         :return pd.DataFrame: dataframe with all features
 
         """
-        self.logger.info("Starting feature extraction ... ")
-        start_time = time.time()
-        parsimony_features_bootstrap = self.feature_computer.compute_parsimony_bootstrap_support()
-        elapsed_time = time.time() - start_time
-        self.logger.info(f"Elpased time: {round(elapsed_time, 2)} seconds")
-        start_time = time.time()
-        split_features_tree = self.feature_computer.compute_split_features_tree()
-        elapsed_time = time.time() - start_time
-        self.logger.info(f"Elpased time: {round(elapsed_time, 2)} seconds")
-        start_time = time.time()
-        substitution_features = self.feature_computer.compute_substitution_features()
-        elapsed_time = time.time() - start_time
-        self.logger.info(f"Elpased time: {round(elapsed_time, 2)} seconds")
-        start_time = time.time()
-        parsimony_features = self.feature_computer.compute_parsimony_support()
-        elapsed_time = time.time() - start_time
-        self.logger.info(f"Elpased time: {round(elapsed_time, 2)} seconds")
-        merged_df = split_features_tree.merge(parsimony_features, on="branchId", how="inner")
-        merged_df = merged_df.merge(parsimony_features_bootstrap, on="branchId", how="inner")
+        if not self.light:
+            self.logger.info("Starting feature extraction ... ")
+            start_time = time.time()
+            parsimony_features_bootstrap = self.feature_computer.compute_parsimony_bootstrap_support()
+            elapsed_time = time.time() - start_time
+            self.logger.info(f"Elpased time: {round(elapsed_time, 2)} seconds")
+            start_time = time.time()
+            split_features_tree = self.feature_computer.compute_split_features_tree()
+            elapsed_time = time.time() - start_time
+            self.logger.info(f"Elpased time: {round(elapsed_time, 2)} seconds")
+            start_time = time.time()
+            substitution_features = self.feature_computer.compute_substitution_features()
+            elapsed_time = time.time() - start_time
+            self.logger.info(f"Elpased time: {round(elapsed_time, 2)} seconds")
+            start_time = time.time()
+            parsimony_features = self.feature_computer.compute_parsimony_support()
+            elapsed_time = time.time() - start_time
+            self.logger.info(f"Elpased time: {round(elapsed_time, 2)} seconds")
+            merged_df = split_features_tree.merge(parsimony_features, on="branchId", how="inner")
+            merged_df = merged_df.merge(parsimony_features_bootstrap, on="branchId", how="inner")
 
-        for key, value in substitution_features.items():
-            merged_df[key] = value
-        self.logger.info("Feature extraction finished!")
+            for key, value in substitution_features.items():
+                merged_df[key] = value
+            self.logger.info("Feature extraction finished!")
+        else:  # don't compute skewness and split features
+            self.logger.info("Starting feature extraction ... ")
+            start_time = time.time()
+            parsimony_features_bootstrap = self.feature_computer.compute_parsimony_bootstrap_support()
+            elapsed_time = time.time() - start_time
+            self.logger.info(f"Elpased time: {round(elapsed_time, 2)} seconds")
+            start_time = time.time()
+            parsimony_features = self.feature_computer.compute_parsimony_support()
+            elapsed_time = time.time() - start_time
+            self.logger.info(f"Elpased time: {round(elapsed_time, 2)} seconds")
+            merged_df = parsimony_features.merge(parsimony_features_bootstrap, on="branchId", how="inner")
+            self.logger.info("Feature extraction finished!")
 
         return merged_df

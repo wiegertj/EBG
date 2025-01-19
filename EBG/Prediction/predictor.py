@@ -50,36 +50,52 @@ class Predictor:
             type of prediction to perform
 
     """
-    def __init__(self, msa_filepath, tree_filepath, model_filepath, o="EBG_output", t="b", raxml_ng_path="raxml-ng", redo=False):
+    def __init__(self, msa_filepath, tree_filepath, model_filepath, o="EBG_output", t="b", raxml_ng_path="raxml-ng", redo=False, light=False):
         self.current_directory = os.path.abspath(os.curdir)
         self.logger = setup_logger("Predictor")
         self.tree_filepath = tree_filepath
-        self.prediction_model_median = get_model("median_model")
-        self.prediction_model_lower5 = get_model("low_model_5")
-        self.prediction_model_lower10 = get_model("low_model_10")
-        self.classifier_70 = get_model("class_70")
-        self.classifier_75 = get_model("class_75")
-        self.classifier_80 = get_model("class_80")
-        self.classifier_85 = get_model("class_85")
-        self.feature_extractor = FeatureExtractor(msa_filepath, tree_filepath, model_filepath, o, raxml_ng_path, redo)
+        if not light:
+            self.prediction_model_median = get_model("median_model")
+            self.prediction_model_lower5 = get_model("low_model_5")
+            self.prediction_model_lower10 = get_model("low_model_10")
+            self.classifier_70 = get_model("class_70")
+            self.classifier_75 = get_model("class_75")
+            self.classifier_80 = get_model("class_80")
+            self.classifier_85 = get_model("class_85")
+        else:
+            self.prediction_model_median = get_model("median_model_light")
+            self.prediction_model_lower5 = get_model("low_model_5_light")
+            self.prediction_model_lower10 = get_model("low_model_10_light")
+            self.classifier_70 = get_model("class_70_light")
+            self.classifier_75 = get_model("class_75_light")
+            self.classifier_80 = get_model("class_80_light")
+            self.classifier_85 = get_model("class_85_light")
+        self.feature_extractor = FeatureExtractor(msa_filepath, tree_filepath, model_filepath, o, raxml_ng_path, redo, light)
         self.output_prefix = o
         self.prediction = None
         self.type = t
+        self.light = light
 
     def predict(self):
         features = self.feature_extractor.extract_features()
 
-        features_pred = features[
-            ["branchId", "parsimony_bootstrap_support", "parsimony_support", "mean_substitution_frequency",
-             "norm_branch_length",
-             "branch_length", "mean_norm_rf_distance", "max_substitution_frequency",
-             "skewness_bootstrap_pars_support_tree", "cv_substitution_frequency",
-             "branch_length_ratio_split", "max_pars_bootstrap_support_children_w", "skw_substitution_frequency",
-             "mean_pars_bootstrap_support_parents",
-             "max_pars_support_children_weighted", "std_pars_bootstrap_support_parents", "min_pars_support_children",
-             "min_pars_support_children_weighted",
-             "number_children_relative", "mean_pars_support_children_weighted", "std_pars_bootstrap_support_children",
-             "mean_closeness_centrality_ratio", "min_pars_bootstrap_support_children_w"]]
+        if not self.light:
+            features_pred = features[
+                ["branchId", "parsimony_bootstrap_support", "parsimony_support", "mean_substitution_frequency",
+                 "norm_branch_length",
+                 "branch_length", "mean_norm_rf_distance", "max_substitution_frequency",
+                 "skewness_bootstrap_pars_support_tree", "cv_substitution_frequency",
+                 "branch_length_ratio_split", "max_pars_bootstrap_support_children_w", "skw_substitution_frequency",
+                 "mean_pars_bootstrap_support_parents",
+                 "max_pars_support_children_weighted", "std_pars_bootstrap_support_parents", "min_pars_support_children",
+                 "min_pars_support_children_weighted",
+                 "number_children_relative", "mean_pars_support_children_weighted", "std_pars_bootstrap_support_children",
+                 "mean_closeness_centrality_ratio", "min_pars_bootstrap_support_children_w"]]
+        else:
+            features_pred = features[["branchId", "parsimony_bootstrap_support", "parsimony_support",
+                 "norm_branch_length",
+                 "branch_length", "mean_norm_rf_distance",
+                 "skewness_bootstrap_pars_support_tree"]]
 
         if self.type == "b" or self.type == "r":
             prediction_lower5 = format_predictions(

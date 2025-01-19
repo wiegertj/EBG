@@ -25,9 +25,11 @@ def main():
                         help="PATH\t\tpath to RAxML-NG\tdefault: raxml-ng")
     parser.add_argument("-redo", action='store_true', required=False,
                         help="if set, all existing results will be overwritten")
+    parser.add_argument("-light", action='store_true', required=False,
+                        help="if set, faster light version of EBG will be used")
 
     args = parser.parse_args()
-    predictor = Predictor(args.msa, args.tree, args.model, args.o, args.t, args.raxmlng, args.redo)
+    predictor = Predictor(args.msa, args.tree, args.model, args.o, args.t, args.raxmlng, args.redo, args.light)
     predictor.predict()
     predictor.map_results()
     total_time = time.time() - start_time
