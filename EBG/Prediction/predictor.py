@@ -92,7 +92,7 @@ class Predictor:
                  "number_children_relative", "mean_pars_support_children_weighted", "std_pars_bootstrap_support_children",
                  "mean_closeness_centrality_ratio", "min_pars_bootstrap_support_children_w"]]
         else:
-            features_pred = features[["branchId", "parsimony_bootstrap_support", "parsimony_support",
+            features_pred = features[["parsimony_bootstrap_support", "parsimony_support",
                  "norm_branch_length",
                  "branch_length", "mean_norm_rf_distance",
                  "skewness_bootstrap_pars_support_tree"]]
